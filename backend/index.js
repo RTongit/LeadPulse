@@ -42,6 +42,10 @@ setInterval(()=>{
     inc++
 },50000)
 
+app.get("/", (req, res) => {
+  res.send("Welcome to LeadPulse Backend!");
+});
+
 app.post("/webhook", (req, res) => {
   console.log("Webhook received!");
   console.log(req.body);
