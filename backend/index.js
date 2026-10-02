@@ -50,7 +50,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to LeadPulse Backend!");
 });
 
-app.post("/webhook", (req, res) => {
+app.get("/webhook", (req, res) => {
   const mode = req.query["hub.mode"];
   const challenge = req.query["hub.challenge"];
   const token = req.query["hub.verify_token"];
