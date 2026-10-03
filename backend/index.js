@@ -35,7 +35,7 @@ io.on("connection", (socket) => {
 
 
 app.get("/", (req, res) => {
-  res.send("Welcome to LeadPulse Backend!");
+  res.send("Welcome to LeadPulse Backend");
 });
 
 app.get("/webhook", (req, res) => {
@@ -51,7 +51,7 @@ app.get("/webhook", (req, res) => {
 });
 
 app.post("/webhook", async (req, res) => {
-  console.log("Webhook received!");
+  console.log("Webhook received");
 
   const lead_id = req.body.entry[0].changes[0].value.leadgen_id
 
@@ -59,11 +59,10 @@ app.post("/webhook", async (req, res) => {
     try {
       const res = await fetch(`https://graph.facebook.com/v26.0/${lead_id}?fields=id,created_time,field_data&access_token=${process.env.META_PAGE_ACCESS_TOKEN}`)
       if(!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
+        throw new Error(`HTTP error with Status =  ${res.status}`);
       }
       // will access data later
       const response = await res.json()
-      console.log("Lead details:", response);
 
       const data = {
         id: response.id,
@@ -82,7 +81,7 @@ app.post("/webhook", async (req, res) => {
   res.sendStatus(200);
 });
 
-const PORT = 5000;
+const PORT = 8000;
 
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

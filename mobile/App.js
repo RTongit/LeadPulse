@@ -29,7 +29,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Leads</Text>
+      <Text style={styles.heading}>Leads appear below : </Text>
 
       {leads.length > 0 ? (
         <FlatList
@@ -41,7 +41,7 @@ export default function App() {
           contentContainerStyle={styles.list}
         />
       ) : null}
-      
+
     </View>
   );
 }
