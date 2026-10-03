@@ -3,55 +3,20 @@ import { View, Text, StyleSheet, FlatList } from "react-native";
 import { io } from "socket.io-client";
 
 export default function App() {
+  useEffect(() => {
+    const socket = io("https://leadpulse-f6me.onrender.com/");
 
-  // useEffect(()=>{
-  //   async function fetchData() {
-  //     try {
-  //       const res = await fetch("http://10.27.117.12:5000/");
-  //       const response = await res.json();
-  //       setLeads((prev)=> [...prev,response])
-  //     }
-  //     catch(error) {
-  //       console.log("Error:", error);
-  //     }
-  //   }
+    socket.on("newLeads", (data) => {
+      setLeads((prev) => [...prev, data]);
+    });
 
-  //   fetchData();
-  // }, 
-  // []
-  // )
-
-  useEffect(()=>{
-    const socket = io("https://leadpulse-f6me.onrender.com/")
-
-    socket.on("newLeads",(data)=>{
-      setLeads((prev)=> [...prev,data])
-    })
-
-    return (()=>{
-      socket.off("newLeads")
+    return () => {
+      socket.off("newLeads");
       socket.disconnect();
-    })
-  }
-  ,[])
-  
-  const [leads, setLeads] = useState([
-    {
-      id: "1",
-      name: "John Doe",
-      email: "john@gmail.com",
-    },
-    {
-      id: "2",
-      name: "Alice Smith",
-      email: "alice@gmail.com",
-    },
-    {
-      id: "3",
-      name: "Rohan",
-      email: "rohan@gmail.com",
-    },
-  ])
+    };
+  }, []);
+
+  const [leads, setLeads] = useState([]);
 
   function LeadItem({ name, email }) {
     return (
@@ -66,16 +31,17 @@ export default function App() {
     <View style={styles.container}>
       <Text style={styles.heading}>Leads</Text>
 
-      <FlatList
-        data={leads}
-        renderItem={({ item }) => (
-          <LeadItem name={item.name} email={item.email} />
-        )}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.list}
-      />
-
-
+      {leads.length > 0 ? (
+        <FlatList
+          data={leads}
+          renderItem={({ item }) => (
+            <LeadItem name={item.name} email={item.email} />
+          )}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.list}
+        />
+      ) : null}
+      
     </View>
   );
 }
