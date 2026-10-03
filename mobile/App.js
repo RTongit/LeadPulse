@@ -22,7 +22,7 @@ export default function App() {
   // )
 
   useEffect(()=>{
-    const socket = io("http://10.27.117.12:5000/")
+    const socket = io("https://leadpulse-f6me.onrender.com/")
 
     socket.on("newLeads",(data)=>{
       setLeads((prev)=> [...prev,data])

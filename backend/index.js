@@ -3,7 +3,6 @@ import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 import dotenv from 'dotenv';
-import { get } from "https";
 
 dotenv.config();
 const app = express();
@@ -33,18 +32,6 @@ io.on("connection", (socket) => {
     console.log("React Native disconnected:", socket.id);
   });
 });
-
-// let inc = 4;
-// setInterval(()=>{
-//     const message = {
-//       id: String(inc),
-//       name: "Jama Steel",
-//       email: "jamal@gmail.com",
-//     }
-//     io.emit("newLeads",message)
-//     inc++
-// },50000)
-
 
 
 app.get("/", (req, res) => {
@@ -77,6 +64,13 @@ app.post("/webhook", async (req, res) => {
       // will access data later
       const response = await res.json()
       console.log("Lead details:", response);
+
+      const data = {
+        id: response.id,
+        name: response.field_data[0].name,
+        email: response.field_data[1].name,
+      }
+      io.emit("newLeads",data)
     }
 
     catch(error) {
