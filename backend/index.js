@@ -67,8 +67,8 @@ app.post("/webhook", async (req, res) => {
 
       const data = {
         id: response.id,
-        name: response.field_data[0].name,
-        email: response.field_data[1].name,
+        name: response.field_data[0].values[0],
+        email: response.field_data[1].values[0],
       }
       io.emit("newLeads",data)
     }
