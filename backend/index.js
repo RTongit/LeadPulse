@@ -3,6 +3,7 @@ import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 import dotenv from 'dotenv';
+import { get } from "https";
 
 dotenv.config();
 const app = express();
@@ -62,9 +63,27 @@ app.get("/webhook", (req, res) => {
 
 });
 
-app.post("/webhook", (req, res) => {
+app.post("/webhook", async (req, res) => {
   console.log("Webhook received!");
-  console.log(req.body);
+
+  const lead_id = req.body.entry[0].changes[0].value.leadgen_id
+
+  async function getLeadDetails() {
+    try {
+      const res = await fetch(`https://graph.facebook.com/v26.0/${lead_id}?fields=id,created_time,field_data&access_token=${process.env.META_PAGE_ACCESS_TOKEN}`)
+      if(!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+      // will access data later
+      const response = await res.json()
+      console.log("Lead details:", response);
+    }
+
+    catch(error) {
+      console.log(error)
+    }
+  }
+  await getLeadDetails()
 
   res.sendStatus(200);
 });
