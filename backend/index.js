@@ -62,6 +62,13 @@ app.get("/webhook", (req, res) => {
 
 });
 
+app.post("/webhook", (req, res) => {
+  console.log("Webhook received!");
+  console.log(req.body);
+
+  res.sendStatus(200);
+});
+
 const PORT = 5000;
 
 server.listen(PORT, () => {
